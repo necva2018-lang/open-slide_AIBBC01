@@ -77,8 +77,8 @@ const CHAPTERS = [
   { name: '開場', from: 1, to: 4 },
   { name: '第一關 帳號與雲端', from: 5, to: 14 },
   { name: '第二關 基本操作', from: 15, to: 22 },
-  { name: '第三關 跟 AI 說話', from: 23, to: 43 },
-  { name: '收尾', from: 44, to: 46 },
+  { name: '第三關 跟 AI 說話', from: 23, to: 52 },
+  { name: '收尾', from: 53, to: 55 },
 ];
 
 const ProgressBar = ({ dark }: { dark?: boolean }) => {
@@ -1668,6 +1668,244 @@ const U3: Page = () => (
   <Stage no="第三關" icon="💬" bg={F.orange} title="跟 AI 好好說話" goal="提示詞＝你對 AI 下的指令。說清楚，它才幫得上忙" time="30 分鐘" />
 );
 
+/* ---------- 第三關暖場：AI 五級分級（素材：野人牧牧〈OpenAI 五級分級〉） ---------- */
+
+// 階梯的一階
+const LvStep = ({ n, icon, name, what, bg, h }: { n: string; icon: string; name: string; what: string; bg: string; h: number }) => (
+  <Blk
+    bg={bg}
+    style={{
+      flex: 1,
+      height: h,
+      padding: '28px 22px',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      textAlign: 'center',
+      gap: 8,
+      borderBottomLeftRadius: 0,
+      borderBottomRightRadius: 0,
+    }}
+  >
+    <Ico size={72}>{icon}</Ico>
+    <div style={{ fontSize: 30, fontWeight: 700, marginTop: 6 }}>Level {n}</div>
+    <div style={{ fontSize: 42, fontWeight: 900, lineHeight: 1.2 }}>{name}</div>
+    <div style={{ fontSize: 30, lineHeight: 1.35 }}>{what}</div>
+  </Blk>
+);
+
+// 能力卡（圖示＋標題＋一句話）
+const Ability = ({ icon, title, line, bg }: { icon: string; title: string; line: string; bg: string }) => (
+  <Blk bg={bg} style={{ display: 'flex', alignItems: 'center', gap: 28, padding: '26px 36px' }}>
+    <Ico size={76}>{icon}</Ico>
+    <div>
+      <div style={{ fontSize: 44, fontWeight: 900, lineHeight: 1.25 }}>{title}</div>
+      <div style={{ fontSize: 34, lineHeight: 1.4, marginTop: 6 }}>{line}</div>
+    </div>
+  </Blk>
+);
+
+// 猜等級翻牌卡：正面情境，背面等級；結構與 Flip 相同，backcheck 可檢查
+const LvFlip = ({ front, icon, back, bg }: { front: string; icon: string; back: string; bg: string }) => {
+  const [flipped, setFlipped] = useState(false);
+  const face: CSSProperties = {
+    position: 'absolute',
+    inset: 0,
+    borderRadius: 24,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 12,
+    padding: '0 28px',
+    textAlign: 'center',
+    backfaceVisibility: 'hidden',
+    WebkitBackfaceVisibility: 'hidden',
+  };
+  return (
+    <div data-osd-interactive onClick={() => setFlipped((f) => !f)} style={{ perspective: 1200, cursor: 'pointer', height: 250 }}>
+      <div
+        style={{
+          position: 'relative',
+          width: '100%',
+          height: '100%',
+          transformStyle: 'preserve-3d',
+          transition: 'transform 600ms cubic-bezier(0.22, 1, 0.36, 1)',
+          transform: flipped ? 'rotateX(180deg)' : 'rotateX(0deg)',
+        }}
+      >
+        <div style={{ ...face, background: bg, color: F.ink }}>
+          <div style={{ fontSize: 40, fontWeight: 700, lineHeight: 1.4, whiteSpace: 'pre-line' }}>{front}</div>
+        </div>
+        <div style={{ ...face, background: C.dark, color: C.darkText, transform: 'rotateX(180deg)' }}>
+          <div style={{ fontSize: 64, lineHeight: 1 }}>{icon}</div>
+          <div style={{ fontSize: 40, fontWeight: 700, lineHeight: 1.3, color: C.gold }}>{back}</div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const LvLadder: Page = () => (
+  <Slide>
+    <Eyebrow>先看全貌｜OpenAI 的 AI 五級分級</Eyebrow>
+    <H>AI 現在走到哪一步？</H>
+    <Body>
+      <div style={{ display: 'flex', gap: 20, alignItems: 'flex-end', height: 560 }}>
+        <LvStep n="1" icon="💬" name="聊天機器人" what="聽得懂、會回話" bg={F.sky} h={330} />
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'stretch', gap: 16 }}>
+          <Blk bg={F.yellow} style={{ alignSelf: 'center', padding: '10px 22px', fontSize: 30, fontWeight: 900, whiteSpace: 'nowrap' }}>
+            📍 現在在這裡
+          </Blk>
+          <LvStep n="2" icon="🧠" name="推理者" what="會一步一步想" bg={F.mint} h={385} />
+        </div>
+        <LvStep n="3" icon="🛠️" name="代理人" what="自己動手做事" bg={F.orange} h={440} />
+        <LvStep n="4" icon="💡" name="創新者" what="幫忙發明新東西" bg={F.pink} h={495} />
+        <LvStep n="5" icon="🏢" name="組織" what="像一整個團隊" bg={F.teal} h={550} />
+      </div>
+    </Body>
+  </Slide>
+);
+
+const Lv1: Page = () => (
+  <Slide>
+    <Eyebrow>Level 1｜聊天機器人</Eyebrow>
+    <H>像一位助理：四個基本功</H>
+    <Body>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 28 }}>
+        <Ability icon="💬" title="聽得懂，回得像人" line="你問 A，它不會答 B" bg={F.sky} />
+        <Ability icon="🧷" title="記得前面說過的" line="問「他是誰？」，知道指誰" bg={F.sky} />
+        <Ability icon="📚" title="回答常識與知識" line="像一本會回話的百科" bg={F.sky} />
+        <Ability icon="✍️" title="模仿語氣、幫你整理" line="寫文案、整理筆記、列清單" bg={F.sky} />
+      </div>
+      <Note>今天要用的 Gemini，這四項早就做到了</Note>
+    </Body>
+  </Slide>
+);
+
+const Lv2: Page = () => (
+  <Slide>
+    <Eyebrow>Level 2｜推理者</Eyebrow>
+    <H>像一位顧問：會想、會說理由</H>
+    <Body>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 28 }}>
+        <Ability icon="🪜" title="一步一步推" line="不只背答案，會推出結果" bg={F.mint} />
+        <Ability icon="🧩" title="跨領域整合" line="把不同專業的知識湊在一起" bg={F.mint} />
+        <Ability icon="🌫️" title="資訊不全也能想" line="沒有標準答案，也能先假設" bg={F.mint} />
+        <Ability icon="🔍" title="說得出「為什麼」" line="每一步怎麼想的，都能檢查" bg={F.mint} />
+      </div>
+      <Note>從「工具」變成「一起想事情的夥伴」</Note>
+    </Body>
+  </Slide>
+);
+
+const Lv2Try: Page = () => (
+  <Slide>
+    <Eyebrow>試試 Level 2｜請 AI 說出理由</Eyebrow>
+    <H>三選一，讓 AI 幫你比</H>
+    <Body>
+      <div style={{ display: 'flex', gap: 16, alignItems: 'center', marginBottom: 40 }}>
+        <Blk bg={F.mint} style={{ flex: 1, padding: '16px 20px', fontSize: 34, fontWeight: 700, textAlign: 'center' }}>① 說清楚問題</Blk>
+        <div style={{ fontSize: 44, color: 'var(--osd-accent)', fontWeight: 900 }}>→</div>
+        <Blk bg={F.mint} style={{ flex: 1, padding: '16px 20px', fontSize: 34, fontWeight: 700, textAlign: 'center' }}>② 一步步推</Blk>
+        <div style={{ fontSize: 44, color: 'var(--osd-accent)', fontWeight: 900 }}>→</div>
+        <Blk bg={F.mint} style={{ flex: 1, padding: '16px 20px', fontSize: 34, fontWeight: 700, textAlign: 'center' }}>③ 比較利弊</Blk>
+        <div style={{ fontSize: 44, color: 'var(--osd-accent)', fontWeight: 900 }}>→</div>
+        <Blk bg={F.mint} style={{ flex: 1, padding: '16px 20px', fontSize: 34, fontWeight: 700, textAlign: 'center' }}>④ 給結論</Blk>
+      </div>
+      <Prompt
+        size={36}
+        lines={[
+          '我在考慮【選項 A】、【選項 B】、【選項 C】，',
+          '條件是【預算／時間／人數】。',
+          '請一步一步比較優缺點，推薦一個，',
+          '並說明你為什麼這樣推薦。',
+        ]}
+      />
+      <Note>理由合不合理，你來判斷；做決定的還是你</Note>
+    </Body>
+  </Slide>
+);
+
+const Lv3: Page = () => (
+  <Slide>
+    <Eyebrow>Level 3｜代理人</Eyebrow>
+    <H>像一位同事：交代了就自己做</H>
+    <Body>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 28 }}>
+        <Ability icon="🎯" title="接下目標，自己拆步驟" line="不用你一步一步教" bg={F.orange} />
+        <Ability icon="🖱️" title="會操作工具" line="開網頁、填表單、寄信" bg={F.orange} />
+        <Ability icon="🔁" title="卡住會換方法再試" line="出錯了，自己修正" bg={F.orange} />
+        <Ability icon="🚗" title="生活裡的例子" line="自動駕駛、智慧家電" bg={F.orange} />
+      </div>
+      <Note>你負責：把事情交代清楚，最後檢查結果</Note>
+    </Body>
+  </Slide>
+);
+
+const Lv4: Page = () => (
+  <Slide>
+    <Eyebrow>Level 4｜創新者</Eyebrow>
+    <H>像一位研發夥伴：想出新東西</H>
+    <Body>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 28 }}>
+        <Ability icon="💡" title="提出新點子" line="不只整理舊資料，還會發想" bg={F.pink} />
+        <Ability icon="🧪" title="自己設計驗證方法" line="想出來，還要試得出來" bg={F.pink} />
+        <Ability icon="🔬" title="幫科學研究加速" line="新藥、新材料、新技術" bg={F.pink} />
+        <Ability icon="🧭" title="找到人沒想到的解法" line="從大量資料裡看出新方向" bg={F.pink} />
+      </div>
+      <Note>和研究人員一起工作，發明的成果還是要人來驗證</Note>
+    </Body>
+  </Slide>
+);
+
+const Lv5: Page = () => (
+  <Slide>
+    <Eyebrow>Level 5｜組織</Eyebrow>
+    <H>像一整間公司：分工合作</H>
+    <Body>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 28 }}>
+        <Ability icon="👥" title="很多 AI 各有角色" line="有人規劃、有人執行、有人檢查" bg={F.teal} />
+        <Ability icon="📋" title="自己分派工作" line="誰做什麼、什麼時候做完" bg={F.teal} />
+        <Ability icon="🤝" title="互相配合" line="一個做完，交給下一個接手" bg={F.teal} />
+        <Ability icon="🏢" title="撐起整個組織的工作" line="像一個有效率的團隊" bg={F.teal} />
+      </div>
+      <Note>離現在還很遠；方向、價值和責任，還是人來決定</Note>
+    </Body>
+  </Slide>
+);
+
+const LvGame: Page = () => (
+  <Slide>
+    <Eyebrow>小遊戲｜先猜，再翻</Eyebrow>
+    <H>這是第幾級的 AI？</H>
+    <Body>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 28 }}>
+        <LvFlip front={"客人問營業時間\n自動回一句"} icon="💬" back="Level 1 聊天機器人" bg={F.sky} />
+        <LvFlip front={"把這段話\n改得客氣一點"} icon="💬" back="Level 1 聊天機器人" bg={F.yellow} />
+        <LvFlip front={"比較三家報價\n說明推薦哪家、為什麼"} icon="🧠" back="Level 2 推理者" bg={F.mint} />
+        <LvFlip front={"自己比價、下單\n再寄確認信給你"} icon="🛠️" back="Level 3 代理人" bg={F.orange} />
+        <LvFlip front={"幫研究人員\n想出新材料"} icon="💡" back="Level 4 創新者" bg={F.pink} />
+        <LvFlip front={"一套 AI\n負責整間公司的運作"} icon="🏢" back="Level 5 組織" bg={F.teal} />
+      </div>
+    </Body>
+  </Slide>
+);
+
+const LvSum: Page = () => (
+  <SumX
+    label="看懂分級之後"
+    line={
+      <>
+        AI 越來越像人，
+        <br />
+        人要越來越不像機器人
+      </>
+    }
+    sub="會判斷、會把需求說清楚，就是接下來要練的"
+  />
+);
+
 const U3Case: Page = () => (
   <Slide>
     <Eyebrow>你可能遇過</Eyebrow>
@@ -1954,7 +2192,7 @@ export const notes: (string | undefined)[] = [
   // 1 封面
   '大家好，歡迎來到 AI 職場全效生產力應用班。正式上課前，我們先花 100 分鐘把工具準備好：帳號、雲端、跟 AI 說話。今天不難，只要跟著做，卡住就舉手。',
   // 2 破冰提問
-  '先舉手：你用過 AI 嗎？A 還沒用過、B 用過幾次、C 每週都在用。（記下大概人數，下課前 P45 再問一次。）選 A 的人多也沒關係，這門課就是從零開始設計的。約 2 分鐘。',
+  '先舉手：你用過 AI 嗎？A 還沒用過、B 用過幾次、C 每週都在用。（記下大概人數，下課前 P54 再問一次。）選 A 的人多也沒關係，這門課就是從零開始設計的。約 2 分鐘。',
   // 3 成果預覽
   '100 分鐘後，你會做到三件事：寄出第一封給我的信、把檔案分享給旁邊的同學、讓 AI 幫你寫出一篇像樣的文案。三件都做到，後面每一章就不會卡在工具上。',
   // 4 三關地圖
@@ -1996,52 +2234,70 @@ export const notes: (string | undefined)[] = [
   // 22 休息
   '休息 5 分鐘。回來前請先打開 gemini.google.com，用剛剛那個帳號登入。',
   // 23 第三關章節頁
-  '第三關：跟 AI 好好說話，30 分鐘。先記一個詞：提示詞，就是你對 AI 下的指令。',
-  // 24 FB 貼文
+  '第三關：跟 AI 好好說話，30 分鐘。先記一個詞：提示詞，就是你對 AI 下的指令。開始寫提示詞之前，先花幾分鐘看一下：我們面對的 AI，現在到底有多厲害。',
+  // 24 五級階梯
+  '這是 OpenAI 提出的 AI 五級分級，用來看 AI 發展到哪一步。（OpenAI 公司內部的分級，不是國際標準，當作地圖看就好。）第一級聊天機器人，聽得懂、會回話；第二級推理者，會一步一步想；第三級代理人，自己動手做事；第四級創新者，幫忙發明新東西；第五級組織，像一整個團隊在工作。現在大概在第二級，第三級正在起步。（「現在在哪」以上課當天的發展為準，可帶一則近期新聞。）約 2 分鐘。',
+  // 25 Level 1
+  'Level 1 像一位助理，有四個基本功：聽得懂、回得像人，你問 A 它不會答 B；記得前面說過的，你問「他是誰」，它知道是剛剛提過的人；回答常識與知識，像一本會回話的百科；模仿語氣、幫你寫文案、整理筆記、列清單。今天要用的 Gemini，這四項早就做到了。約 1 分鐘。',
+  // 26 Level 2
+  'Level 2 像一位顧問。不只背答案，會一步一步推出結果；會把不同專業的知識湊在一起解題；資訊不完整、沒有標準答案，也能先提出合理假設；最重要的是說得出為什麼，每一步怎麼想的都能檢查。這就是 AI 從工具變成一起想事情的夥伴。約 1 分鐘。',
+  // 27 Level 2 試用
+  '試一下 Level 2：請 AI 說出理由。好的推理有四步：說清楚問題、一步步推、比較利弊、給結論。提示詞照框裡填：我在考慮哪三個選項、條件是什麼，請它一步步比較、推薦一個、說明為什麼。可以用生活例子示範，例如三家午餐便當、三個旅遊地點。看完提醒：理由合不合理由你判斷，做決定的還是你。提示詞未在 Gemini 實測。約 2 分鐘。',
+  // 28 Level 3
+  'Level 2 會想、會建議，但還不會自己動手。Level 3 代理人就是開始自己動手：你交代一個目標，它自己拆步驟、自己操作工具，像開網頁、填表單、寄信，卡住了會換方法再試。生活裡的例子是自動駕駛、智慧家電。這一級正在起步，各家 AI 都在試做這類功能。（文章沒有寫 Level 3～5 的細節，這三頁依 OpenAI 分級的定義補充。）重點是：你要把事情交代清楚，最後檢查結果。約 1 分鐘。',
+  // 29 Level 4
+  'Level 4 創新者：不只整理已經有的知識，還能提出新點子、自己設計方法驗證，幫科學研究加速，例如新藥、新材料；也可能從大量資料裡看出人沒想到的方向。它是和研究人員一起工作，成果還是要人來驗證。約 1 分鐘。',
+  // 30 Level 5
+  'Level 5 組織：很多個 AI 各有角色，有人規劃、有人執行、有人檢查，自己分派工作、互相配合，撐起一整個組織的工作，像一個有效率的團隊。這一級離現在還很遠。不管 AI 到第幾級，方向、價值和責任，還是由人來決定。約 1 分鐘。',
+  // 31 猜等級
+  '小遊戲：這是第幾級？我念題目，大家喊數字，再翻開。自動回營業時間、把話改客氣：Level 1；比較三家報價還說明理由：Level 2；自己比價、下單、寄確認信：Level 3 代理人，開始自己動手了；幫研究人員想出新材料：Level 4；一套 AI 負責整間公司：Level 5。（按 F 進播放模式才能翻。）約 2 分鐘。',
+  // 32 金句
+  '看懂分級之後記一句話：AI 越來越像人，人要越來越不像機器人。（這句出自野人牧牧的文章〈OpenAI 五級分級〉。）AI 會想、會寫了，人的價值在會判斷、會把需求說清楚。接下來我們就來練：怎麼跟 AI 說清楚。約 1 分鐘。',
+  // 33 FB 貼文
   '大家可能遇過：主管說幫我想一下新產品的 FB 貼文，你輸入「幫我寫 FB 貼文」，得到一篇什麼產品都適用的空話。不是 AI 不會寫，是它不知道你賣什麼、寫給誰看、要多長、什麼語氣。約 2 分鐘。',
-  // 25 廚師
+  // 34 廚師
   '打個比方：AI 是廚師。你只說「給我做個東西」，可能拿到一盤隨便的沙拉；你說「義大利麵、清爽、15 分鐘、兩人份」，就剛好是你要的。約 2 分鐘。',
-  // 26 四要素
+  // 35 四要素
   '好問題四要素：角色、目標、限制、格式。用藍牙耳機當例子：角色是網路行銷專家；目標是為新款藍牙耳機寫 FB 推廣文案；限制是 18 到 30 歲台灣年輕人、輕鬆潮流的語氣；格式是要有標題，亮點寫藍牙 5.3、輕量、長效續航。約 3 分鐘。',
-  // 27 三種問法
+  // 36 三種問法
   '同一件事三種問法，先猜再翻。只說寫貼文：通用文案；加上對象：語氣對了，但亮點是 AI 自己編的；四要素都寫：有標題、三個亮點都在、語氣一致。可以現場在 Gemini 跑第一句和第三句比較。完整四要素提示詞見 001-3 原文開頭。約 3 分鐘。',
-  // 28 晚餐
+  // 37 晚餐
   '暖身，大家一起跟做：在 Gemini 輸入晚餐這段，2 個人、20 分鐘、不吃辣。看完結果，在同一個對話再追加一句：家裡沒有烤箱，請調整。檢查三件事：是不是兩人份、時間有沒有在 20 分鐘內、追加後還有沒有用烤箱。結果每個人都不一樣，這是正常的。約 5 分鐘。',
-  // 29 萬用模板
+  // 38 萬用模板
   '今天帶走的模板：萬用填空。你是一位什麼角色；請幫我做什麼任務，對象是誰；限制是字數、語氣、不要出現的內容；用條列、表格或三個版本的格式；最後一句很重要：資料裡沒有的請標待確認，不要自己編。請大家複製存起來。約 3 分鐘。',
-  // 30 找碴
+  // 39 找碴
   '找碴遊戲：我們只給了藍牙 5.3、輕量、長效續航，這段文案裡哪些是 AI 自己補的？搶答後點一下看答案：續航 40 小時、990 元、送收納袋，都是我們沒給的（這段是示意文字，數字是虛構的）。AI 會補看起來很合理的資料，重要的數字、價格、日期一定要自己核對。約 3 分鐘。',
-  // 31 場景選單
-  '這是 10 個職場最常用的場景，每一個都有填空框架。我今天挑 2 到 3 個示範，其他的請帶回去照著用。（現場依學員舉手或課前問卷結果挑選，直接翻到對應頁：場景 1 在 P32，依序到場景 10 在 P41。）',
-  // 32 場景 1
+  // 40 場景選單
+  '這是 10 個職場最常用的場景，每一個都有填空框架。我今天挑 2 到 3 個示範，其他的請帶回去照著用。（現場依學員舉手或課前問卷結果挑選，直接翻到對應頁：場景 1 在 P41，依序到場景 10 在 P50。）',
+  // 41 場景 1
   '場景一：會議紀錄。兩小時的會議，請 AI 整理成主要決策、待辦事項含負責人、下一步時間表。範例：請幫我整理以下「行銷部會議逐字稿」。CH02 會用真的錄音檔練完整流程。',
-  // 33 場景 2
+  // 42 場景 2
   '場景二：客戶溝通模擬。提案前請 AI 扮演挑剔的客戶，先問你尖銳問題。範例：請模擬一位「挑剔的企業客戶」，針對「CRM 系統導入方案」提出 5 個尖銳問題。你回覆後，它會繼續追問，等於提案彩排。',
-  // 34 場景 3
+  // 43 場景 3
   '場景三：簡報開場。請 AI 一次給三種風格：正式專業、輕鬆幽默、故事帶入，你挑一個最適合的。範例主題：電商市場趨勢。CH07、CH08 會做完整簡報。',
-  // 35 場景 4
+  // 44 場景 4
   '場景四：數據分析。請 AI 當數據分析師，看月度銷售報表，給成長趨勢、異常點、建議用折線圖或長條圖。數字一定要回原檔核對。CH03、CH04、CH10 會深入。',
-  // 36 場景 5
+  // 45 場景 5
   '場景五：問題拆解。老闆問專案為什麼延遲，請 AI 一步一步分析背景原因、三個挑戰、解決方案，最後整理成 3 分鐘能講完的口頭簡報稿。',
-  // 37 場景 6
+  // 46 場景 6
   '場景六：Email。把你的草稿貼進去，請 AI 潤色成禮貌但明確的英文商務郵件，不超過 150 字。客戶名稱、金額這些先換掉再貼。CH06 會深入。',
-  // 38 場景 7
+  // 47 場景 7
   '場景七：學習研究。突然接到陌生主題，例如 ESG，請 AI 用 5 個步驟解釋核心概念，並舉台灣近三年的兩個實際案例。案例請自己查證來源。CH05 會教 NotebookLM。',
-  // 39 場景 8
+  // 48 場景 8
   '場景八：專案規劃。請 AI 當專案經理，把新品上市專案拆成任務清單、排高中低優先順序、做兩週時間表。',
-  // 40 場景 9
+  // 49 場景 9
   '場景九：行銷社群。靈感用完時，例如「AI 與日常生活」這個主題，設計 5 個 IG 限動互動問題，要有趣、能吸引參與。CH11 會深入。',
-  // 41 場景 10
+  // 50 場景 10
   '場景十：職涯面試。請 AI 當人資經理，檢視你的履歷指出三個要改的地方，再模擬行銷專員面試，先問三個常見問題。履歷上的電話、地址先拿掉。',
-  // 42 追問
+  // 51 追問
   '一次沒問好不用重來，用追問改。例如：很好，請把它改短成 100 字以內，再多給我 2 個不同的標題選擇。在同一個對話裡追問，AI 記得前面說過的；開了新對話，前面的要求就要重講一次。請大家拿剛剛的結果追問一次。約 3 分鐘。',
-  // 43 第三關總結
+  // 52 第三關總結
   '第三關只記一句：說清楚，AI 才幫得上忙。角色、目標、限制、格式；重要的數字、價格、日期，自己核對。',
-  // 44 帶走三樣
+  // 53 帶走三樣
   '今天帶走三樣。觀念：說清楚 AI 才幫得上忙，它補的資料要核對。提示詞：萬用填空模板。行動：這週用 Gemini 問一件工作上真的要做的事，下次上課分享。約 2 分鐘。',
-  // 45 念信
+  // 54 念信
   '回到開場：我來念幾封大家寄來的信，「我最想讓 AI 幫我做的一件事」。（挑 3～4 封，順便說這件事會在哪一章學到。）最後再舉手一次：A 還是有點怕、B 回去會試試看、C 已經想好要問什麼，和開場比較一下。約 3 分鐘。',
-  // 46 下一站
+  // 55 下一站
   '下一站是 CH01 AI 資料整理術：亂資料，交給 AI 先整理。請確認三件事：帳號登入好、會上傳檔案、填空模板存好了。謝謝大家。',
 ];
 
@@ -2074,6 +2330,15 @@ export default [
   U2Sum,
   Break,
   U3,
+  LvLadder,
+  Lv1,
+  Lv2,
+  Lv2Try,
+  Lv3,
+  Lv4,
+  Lv5,
+  LvGame,
+  LvSum,
   U3Case,
   U3Chef,
   U3Four,
