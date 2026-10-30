@@ -873,7 +873,7 @@ const CheckItem = ({ children }: { children: ReactNode }) => (
 );
 
 // 單元章節頁（AI 班）：單元編號＋標題＋一句學習目標
-const Unit = ({ no, title, goal, time }: { no: string; title: string; goal: string; time: string }) => (
+const Unit = ({ no, title, goal, time }: { no: string; title: string; goal: string; time?: string }) => (
   <Slide center>
     <div style={{ display: 'flex', alignItems: 'center', gap: 72 }}>
       <div style={{ fontSize: 220, fontWeight: 900, lineHeight: 1, color: 'var(--osd-accent)', fontFamily: serif, whiteSpace: 'nowrap', flex: 'none' }}>
@@ -882,9 +882,11 @@ const Unit = ({ no, title, goal, time }: { no: string; title: string; goal: stri
       <div>
         <H size={96}>{title}</H>
         <div style={{ fontSize: 42, color: C.muted, marginTop: 24, lineHeight: 1.5 }}>{goal}</div>
-        <div style={{ marginTop: 28 }}>
-          <Pill>{time}</Pill>
-        </div>
+        {time ? (
+          <div style={{ marginTop: 28 }}>
+            <Pill>{time}</Pill>
+          </div>
+        ) : null}
       </div>
     </div>
   </Slide>
@@ -896,6 +898,14 @@ import u31Result from './assets/u31-result.jpg';
 import u35Case from './assets/u35-case.jpg';
 import u35Bad from './assets/u35-bad.jpg';
 import ship01 from './assets/ship01.jpg';
+
+const CaseLink = ({ href, children }: { href: string; children: ReactNode }) => (
+  <a data-osd-interactive href={href} target="_blank" rel="noopener noreferrer"
+    onClick={(event) => event.stopPropagation()}
+    style={{ display: 'inline-block', marginTop: 20, padding: '8px 18px', border: '2px solid var(--osd-accent)', borderRadius: 12, background: C.panel, color: 'var(--osd-accent)', fontSize: 28, fontWeight: 700, textDecoration: 'none', whiteSpace: 'nowrap' }}>
+    🔗 {children}
+  </a>
+);
 
 const Big = ({ children, style }: { children: ReactNode; style?: CSSProperties }) => (
   <div style={{ fontSize: 44, lineHeight: 1.5, ...style }}>{children}</div>
@@ -1004,19 +1014,19 @@ const Hook: Page = () => (
 const Agenda: Page = () => (
   <Slide>
     <Eyebrow>今天的六個單元</Eyebrow>
-    <H>9:00～12:30</H>
+    <H>今天的六個單元</H>
     <Body>
       <Grid
-        cols="140px 1fr 260px"
+        cols="140px 1fr"
         size={38}
         rows={[
-          ['單元', '主題', '時間'],
-          ['3-1', '看不懂公式？截圖問 AI', '9:10'],
-          ['3-2', '用說的，讓 AI 寫函數', '9:35'],
-          ['3-3', '看懂公式，才會改公式', '10:00'],
-          ['3-4', '讓表格自己變色', '10:35'],
-          ['3-5', '一張好截圖，省十句話', '11:00'],
-          ['3-6', '實作：拍照就能記錄的出貨表', '11:20'],
+          ['單元', '主題'],
+          ['3-1', '看不懂公式？截圖問 AI'],
+          ['3-2', '用說的，讓 AI 寫函數'],
+          ['3-3', '看懂公式，才會改公式'],
+          ['3-4', '讓表格自己變色'],
+          ['3-5', '一張好截圖，省十句話'],
+          ['3-6', '實作：拍照就能記錄的出貨表'],
         ]}
       />
       <Note>請先登入 Google 帳號，打開 Gemini 和今天的案例檔</Note>
@@ -1027,7 +1037,7 @@ const Agenda: Page = () => (
 /* ---------- 3-1 ---------- */
 
 const U1: Page = () => (
-  <Unit no="3-1" title="看不懂公式？截圖問 AI" goal="截圖＋一句話，請 AI 說明公式，再依新需求修改" time="9:10～9:35" />
+  <Unit no="3-1" title="看不懂公式？截圖問 AI" goal="截圖＋一句話，請 AI 說明公式，再依新需求修改" />
 );
 
 const U1Case: Page = () => (
@@ -1047,6 +1057,7 @@ const U1Case: Page = () => (
         ]}
       />
       <Note>共 25 筆客戶資料。主管要你：把漏填的人全部找出來</Note>
+      <CaseLink href="https://docs.google.com/spreadsheets/d/113sksY4Pm-C1xywJHUUQm-XgizyaPZlzh5etSRznMQA/edit">CH03 3-1 練習｜客戶資料檢查</CaseLink>
     </Body>
   </Slide>
 );
@@ -1165,7 +1176,7 @@ const U1Sum: Page = () => (
 /* ---------- 3-2 ---------- */
 
 const U2: Page = () => (
-  <Unit no="3-2" title="用說的，讓 AI 寫函數" goal="說清楚從哪找、找什麼、放哪裡，AI 就能寫出 VLOOKUP、SUMIF" time="9:35～10:00" />
+  <Unit no="3-2" title="用說的，讓 AI 寫函數" goal="說清楚從哪找、找什麼、放哪裡，AI 就能寫出 VLOOKUP、SUMIF" />
 );
 
 const U2Case: Page = () => (
@@ -1179,6 +1190,7 @@ const U2Case: Page = () => (
         <Vote n="3">「每一類最新的商品是哪一個？」</Vote>
       </div>
       <Note>資料都在「人氣家電商品單價表」：分類、商品編號、單價，共 12 筆</Note>
+      <CaseLink href="https://docs.google.com/spreadsheets/d/1R0dHEyKo1hVRviVMYeVDakFDkLlOEo9XEjeQwFj9YWA/edit">CH03 3-2 練習｜人氣家電商品表</CaseLink>
     </Body>
   </Slide>
 );
@@ -1305,7 +1317,7 @@ const U2Sum: Page = () => (
 /* ---------- 3-3 ---------- */
 
 const U3: Page = () => (
-  <Unit no="3-3" title="看懂公式，才會改公式" goal="請 AI 用白話拆解公式，條件一變也會自己改" time="10:00～10:25" />
+  <Unit no="3-3" title="看懂公式，才會改公式" goal="請 AI 用白話拆解公式，條件一變也會自己改" />
 );
 
 const U3Case: Page = () => (
@@ -1317,6 +1329,7 @@ const U3Case: Page = () => (
         <Pair tag="只複製貼上" title="下次又要重問" lines={['條件一變就不會改', '範圍錯了也看不出來']} />
         <Pair tag="請 AI 解釋" title="自己會改" lines={['知道每個參數在做什麼', '換一張報表也能套用']} />
       </div>
+      <CaseLink href="https://docs.google.com/spreadsheets/d/1tqIRM2ByJSEbhIcY2C35oiUOZzh1Gtlm-55NtsCXrmQ/edit">CH03 3-3 練習｜公式邏輯</CaseLink>
     </Body>
   </Slide>
 );
@@ -1434,16 +1447,16 @@ const Break: Page = () => (
   <Slide dark center>
     <div style={{ fontSize: 32, color: C.gold, letterSpacing: '0.12em', fontWeight: 700 }}>休息時間</div>
     <H size={140} dark style={{ marginTop: 20 }}>
-      休息 10 分鐘
+      休息一下
     </H>
-    <div style={{ fontSize: 44, color: C.darkMuted, marginTop: 36 }}>10:35 回來｜下一段：讓表格自己變色</div>
+    <div style={{ fontSize: 44, color: C.darkMuted, marginTop: 36 }}>休息後｜下一段：讓表格自己變色</div>
   </Slide>
 );
 
 /* ---------- 3-4 ---------- */
 
 const U4: Page = () => (
-  <Unit no="3-4" title="讓表格自己變色" goal="用文字說清楚規則，請 AI 給你條件式格式的自訂公式" time="10:35～11:00" />
+  <Unit no="3-4" title="讓表格自己變色" goal="用文字說清楚規則，請 AI 給你條件式格式的自訂公式" />
 );
 
 const U4Case: Page = () => (
@@ -1472,6 +1485,7 @@ const U4Case: Page = () => (
           沒完成且低於 80%
         </span>
       </div>
+      <CaseLink href="https://docs.google.com/spreadsheets/d/1SygteZBJQfy16vtSViAUer6-sFcgC9qxn-Z7NSbK8gc/edit">CH03 3-4 練習｜條件式格式</CaseLink>
     </Body>
   </Slide>
 );
@@ -1569,7 +1583,7 @@ const U4Sum: Page = () => (
 /* ---------- 3-5 ---------- */
 
 const U5: Page = () => (
-  <Unit no="3-5" title="一張好截圖，省十句話" goal="截圖＋目標＋實際與預期，AI 才能準確排錯" time="11:00～11:20" />
+  <Unit no="3-5" title="一張好截圖，省十句話" goal="截圖＋目標＋實際與預期，AI 才能準確排錯" />
 );
 
 const U5Case: Page = () => (
@@ -1579,6 +1593,7 @@ const U5Case: Page = () => (
     <Body>
       <Shot src={u35Case} h={420} />
       <Note>F2 想算文具總金額，卻顯示 0。先自己找找看，問題在哪？</Note>
+      <CaseLink href="https://docs.google.com/spreadsheets/d/1Z36CrEdsnvV_xOlAgtV-HBWS0yNaEF3EPDMjf-V2mUQ/edit">CH03 3-5 練習｜截圖排錯</CaseLink>
     </Body>
   </Slide>
 );
@@ -1666,7 +1681,6 @@ const U6: Page = () => (
     no="3-6"
     title="實作：拍照記錄出貨表"
     goal="照片交給 AI，整理成一列一筆，再加上核對公式"
-    time="11:20～12:15・55 分鐘"
   />
 );
 
@@ -1676,17 +1690,18 @@ const U6Flow: Page = () => (
     <H>五個步驟</H>
     <Body>
       <Grid
-        cols="100px 1fr 160px"
+        cols="100px 1fr"
         size={38}
         rows={[
-          ['步驟', '做什麼', '時間'],
-          ['1', '先想欄位：請 AI 依出貨單設計紀錄表', '10 分'],
-          ['2', '拍照錄入：照片交給 AI，貼進 Google 試算表', '10 分'],
-          ['3', '加核對公式：小計與檢查，請 AI 解釋', '10 分'],
-          ['4', '換一家公司：同一張表還能用嗎？', '10 分'],
-          ['5', '換成自己公司的單據重做一次', '15 分'],
+          ['步驟', '做什麼'],
+          ['1', '先想欄位：請 AI 依出貨單設計紀錄表'],
+          ['2', '拍照錄入：照片交給 AI，貼進 Google 試算表'],
+          ['3', '加核對公式：小計與檢查，請 AI 解釋'],
+          ['4', '換一家公司：同一張表還能用嗎？'],
+          ['5', '換成自己公司的單據重做一次'],
         ]}
       />
+      <CaseLink href="https://docs.google.com/spreadsheets/d/1el-x8bsaSq6_L9SVHMwzChTPGF2VoMjBgLM_QMi66yQ/edit">CH03 3-6 練習｜出貨單</CaseLink>
     </Body>
   </Slide>
 );
@@ -1849,7 +1864,7 @@ const TakeAway: Page = () => (
 
 const Next: Page = () => (
   <Slide>
-    <Eyebrow>下午 13:30</Eyebrow>
+    <Eyebrow>下個單元</Eyebrow>
     <H>CH04：篩選、彙總、抓錯</H>
     <Body>
       <Grid
@@ -1895,9 +1910,9 @@ export const notes: (string | undefined)[] = [
   // 3 開場提問
   '先舉手：你的報表裡，有沒有一個看不懂、但不敢動的公式？有的舉 A，沒有的舉 B，不確定的舉 C。我記一下人數，下課前再問一次。',
   // 4 目錄
-  '今天六個單元，前五個每個大約 25 分鐘，講解、示範、跟做；第三單元後休息 10 分鐘；最後一個單元是 55 分鐘的實作。請大家現在登入 Google 帳號，打開 Gemini 和案例檔，等一下要跟著做。',
+  '今天有六個單元，包含講解、示範、跟做，以及最後的實作。請大家現在登入 Google 帳號，打開 Gemini 和案例檔，等一下要跟著做。',
   // 5 3-1 章節頁
-  '第一個單元，看不懂公式怎麼辦？以前要上網查、問同事，現在截一張圖給 AI 就好。這個單元大約 25 分鐘。',
+  '第一個單元，看不懂公式怎麼辦？以前要上網查、問同事，現在截一張圖給 AI 就好。',
   // 6 情境
   '情境是這樣：你接手同事的客戶名單，25 筆資料，有人漏填姓名，有人漏填電話或地址。主管要你把漏填的全部找出來。25 筆用眼睛看還可以，250 筆呢？',
   // 7 三種問法
@@ -1911,7 +1926,7 @@ export const notes: (string | undefined)[] = [
   // 11 總結
   '這個單元只記一句：先請 AI 解釋，再請 AI 修改。分兩次問，比較不會改錯。另外提醒，檔案放在雲端硬碟時，先確認是 Excel 檔還是 Google 試算表，兩種格式能用的功能不完全一樣。',
   // 12 3-2 章節頁
-  '第二個單元，用說的讓 AI 寫函數。VLOOKUP、SUMIF 這些名字記不起來沒關係，會說需求就好。大約 25 分鐘。',
+  '第二個單元，用說的讓 AI 寫函數。VLOOKUP、SUMIF 這些名字記不起來沒關係，會說需求就好。',
   // 13 情境
   '主管常問三種問題：某個商品多少錢、某一類加起來多少、每一類最新的是哪一個。資料都在人氣家電商品單價表裡，分類、商品編號、單價，三類各 4 筆，共 12 筆。',
   // 14 三件事
@@ -1925,7 +1940,7 @@ export const notes: (string | undefined)[] = [
   // 18 總結
   '這個單元只記一句：不用記函數，要會說需求。結果不對的時候，把錯誤畫面截圖回貼給 AI，請它重寫。',
   // 19 3-3 章節頁
-  '第三個單元，看懂公式才會改公式。大約 25 分鐘。',
+  '第三個單元，看懂公式才會改公式。',
   // 20 情境
   'AI 給的公式，很多人複製貼上就結束了。問題是下次條件一變，例如主管只要看已付款的，你就不會改，又要重新問；範圍錯了也看不出來。請 AI 解釋，你就知道每個參數在做什麼，換一張報表也能自己套。',
   // 21 拆解
@@ -1939,9 +1954,9 @@ export const notes: (string | undefined)[] = [
   // 25 總結
   '這個單元只記一句：分清楚變與不變。練習：E3 改成餐飲，把 G2 的已付款公式往下複製。先猜再算。答案：已付款餐飲是 250，只有午餐；未付款餐飲是 150，把條件改成未付款。',
   // 26 休息
-  '休息 10 分鐘，10:35 回來。下一段要讓表格自己變色。',
+  '休息一下，接著讓表格自己變色。下一段要讓表格自己變色。',
   // 27 3-4 章節頁
-  '第四個單元，讓表格自己變色，也就是條件式格式設定。大約 25 分鐘。',
+  '第四個單元，讓表格自己變色，也就是條件式格式設定。',
   // 28 情境
   '案件進度表有 8 筆。希望已完成的整列變淡綠色，沒完成而且完成率低於 80% 的整列變淡紅色。85% 的不標色，完成率還沒填的也不要標紅。',
   // 29 提示詞
@@ -1955,7 +1970,7 @@ export const notes: (string | undefined)[] = [
   // 33 總結
   '這個單元只記一句：上線前先測四種情況。已完成、低於 80%、剛好 80%、完成率空白。練習：把一筆進行中 85% 改成 75%，看這一列有沒有變紅。',
   // 34 3-5 章節頁
-  '第五個單元，一張好截圖省十句話。大約 20 分鐘。',
+  '第五個單元，一張好截圖省十句話。',
   // 35 情境
   '這張表 F2 想算文具總金額，卻顯示 0。請大家先自己看 30 秒，找找問題在哪。等一下我們看 AI 怎麼找。',
   // 36 好壞截圖
@@ -1967,9 +1982,9 @@ export const notes: (string | undefined)[] = [
   // 39 總結
   '答案揭曉，先猜再翻：錯在第三個參數，指到 B 欄項目，是文字，加總當然是 0。改成 C 欄金額，結果就是 400。練習：E2 改成餐飲，修正後應該是多少？答案 400，午餐 250 加飲料 150。',
   // 40 3-6 章節頁
-  '最後一個單元是實作，55 分鐘。我們要做一張拍照就能記錄的出貨紀錄表。',
+  '最後一個單元是實作。我們要做一張拍照就能記錄的出貨紀錄表。',
   // 41 流程
-  '五個步驟，時間都寫在上面。沒帶自己公司單據的同學，用案例資料夾裡的三張出貨單照片。注意：真實單據有客戶名稱、統一編號、地址，使用前先遮住，或確認公司規定。',
+  '這個實作分成五個步驟。沒帶自己公司單據的同學，用案例資料夾裡的三張出貨單照片。注意：真實單據有客戶名稱、統一編號、地址，使用前先遮住，或確認公司規定。',
   // 42 一列一品項
   '第一步先想欄位。出貨單分成表頭和明細：表頭是單號、日期、客戶；明細是每個品項。建議一列放一個品項，表頭資料每一列重複填，這樣之後才能用 SUMIF、篩選來統計。請大家先用原本的提示詞：以這張出貨單為案例，幫我設計好用的報表，我希望拍照後可以記錄資料，每筆資料做成一列，先做好紀錄就好。',
   // 43 拍照錄入
@@ -1979,15 +1994,15 @@ export const notes: (string | undefined)[] = [
   // 45 單據也會錯
   '這頁是今天的亮點。第一張單，明細三台各 3,300，加起來 9,900，單據合計卻寫 10,395，剛好是加了 5% 稅，可是稅額欄寫 0。第二張送貨單，數量那一欄的小計寫 352，其實是把單價加起來，真正的數量合計是 237。AI 會照抄，不會發現；要靠公式核對。',
   // 46 檢核
-  '最後 15 分鐘，換成自己公司的單據再做一次。完成後對照這五項，兩兩互看，每個人分享一個需要人工確認的地方。',
+  '最後，換成自己公司的單據再做一次。完成後對照這五項，兩兩互看，每個人分享一個需要人工確認的地方。',
   // 47 QA
   '開放問答。操作卡住、公式跑不出來，都可以現在問。',
   // 48 帶走三樣
   '帶走三樣。觀念：先講清楚欄位和預期答案，AI 給公式後自己用兩三筆驗算。提示詞：公式需求四句話，我的表 A 欄是什麼、我想算什麼、結果放在哪、預期答案是多少，最後請它逐段解釋。行動：下週上班，挑一個看不懂的公式，截圖請 AI 解釋。',
   // 49 下篇預告
-  '下午 1 點半是 CH04 下篇：篩選、彙總、抓錯。會用到今天的 SUMIF 和截圖提問，請大家把今天的案例檔留著。',
+  '接著是 CH04 下篇：篩選、彙總、抓錯。會用到今天的 SUMIF 和截圖提問，請大家把今天的案例檔留著。',
   // 50 收尾
-  '回到開場的問題：那個不敢動的公式，現在敢動了嗎？A 敢了、B 還要練習、C 有新問題。比較一下和開場的舉手人數。選 C 的同學，下午上課前可以來問我。謝謝大家。',
+  '回到開場的問題：那個不敢動的公式，現在敢動了嗎？A 敢了、B 還要練習、C 有新問題。比較一下和開場的舉手人數。選 C 的同學，課後可以來問我。謝謝大家。',
 ];
 
 export const meta: SlideMeta = {
