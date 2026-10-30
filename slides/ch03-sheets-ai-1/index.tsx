@@ -1445,11 +1445,11 @@ const U3Sum: Page = () => (
 
 const Break: Page = () => (
   <Slide dark center>
-    <div style={{ fontSize: 32, color: C.gold, letterSpacing: '0.12em', fontWeight: 700 }}>休息時間</div>
+    <div style={{ fontSize: 32, color: C.gold, letterSpacing: '0.12em', fontWeight: 700 }}>前段重點</div>
     <H size={140} dark style={{ marginTop: 20 }}>
-      休息一下
+      先解釋，再修改
     </H>
-    <div style={{ fontSize: 44, color: C.darkMuted, marginTop: 36 }}>休息後｜下一段：讓表格自己變色</div>
+    <div style={{ fontSize: 44, color: C.darkMuted, marginTop: 36 }}>下一段：讓表格自己變色</div>
   </Slide>
 );
 
@@ -1954,7 +1954,7 @@ export const notes: (string | undefined)[] = [
   // 25 總結
   '這個單元只記一句：分清楚變與不變。練習：E3 改成餐飲，把 G2 的已付款公式往下複製。先猜再算。答案：已付款餐飲是 250，只有午餐；未付款餐飲是 150，把條件改成未付款。',
   // 26 休息
-  '休息一下，接著讓表格自己變色。下一段要讓表格自己變色。',
+  '回顧前面三個單元：公式不要直接照貼，先請 AI 解釋，再改條件，最後用案例數字驗算。接著要讓表格依條件自己變色。',
   // 27 3-4 章節頁
   '第四個單元，讓表格自己變色，也就是條件式格式設定。',
   // 28 情境
