@@ -873,7 +873,7 @@ const CheckItem = ({ children }: { children: ReactNode }) => (
 );
 
 // 單元章節頁（AI 班）：單元編號＋標題＋一句學習目標
-const Unit = ({ no, title, goal, time }: { no: string; title: string; goal: string; time: string }) => (
+const Unit = ({ no, title, goal, time }: { no: string; title: string; goal: string; time?: string }) => (
   <Slide center>
     <div style={{ display: 'flex', alignItems: 'center', gap: 72 }}>
       <div style={{ fontSize: 220, fontWeight: 900, lineHeight: 1, color: 'var(--osd-accent)', fontFamily: serif, whiteSpace: 'nowrap', flex: 'none' }}>
@@ -882,9 +882,11 @@ const Unit = ({ no, title, goal, time }: { no: string; title: string; goal: stri
       <div>
         <H size={96}>{title}</H>
         <div style={{ fontSize: 42, color: C.muted, marginTop: 24, lineHeight: 1.5 }}>{goal}</div>
-        <div style={{ marginTop: 28 }}>
-          <Pill>{time}</Pill>
-        </div>
+        {time ? (
+          <div style={{ marginTop: 28 }}>
+            <Pill>{time}</Pill>
+          </div>
+        ) : null}
       </div>
     </div>
   </Slide>
@@ -894,6 +896,19 @@ const Unit = ({ no, title, goal, time }: { no: string; title: string; goal: stri
 
 import infoA from './assets/u21-info-a.jpg';
 import infoB from './assets/u21-info-b.jpg';
+
+const CaseLink = ({ href, children }: { href: string; children: ReactNode }) => (
+  <a
+    data-osd-interactive
+    href={href}
+    target="_blank"
+    rel="noopener noreferrer"
+    onClick={(event) => event.stopPropagation()}
+    style={{ display: 'inline-block', padding: '8px 18px', border: '2px solid var(--osd-accent)', borderRadius: 12, background: C.panel, color: 'var(--osd-accent)', fontSize: 28, fontWeight: 700, textDecoration: 'none', whiteSpace: 'nowrap' }}
+  >
+    🔗 {children}
+  </a>
+);
 
 const Big = ({ children, style }: { children: ReactNode; style?: CSSProperties }) => (
   <div style={{ fontSize: 44, lineHeight: 1.5, ...style }}>{children}</div>
@@ -1148,7 +1163,10 @@ const U2Case: Page = () => (
           ['內容', '三項新品、三大行銷策略、四項 KPI'],
         ]}
       />
-      <Note>和上午 1-4 是同一支錄音：ch02_2-2會議錄音 的副本</Note>
+      <Note>和上午 1-4 是同一支錄音</Note>
+      <div style={{ marginTop: 18 }}>
+        <CaseLink href="https://drive.google.com/file/d/11ghkaP6rWqyGriEuc_dr2KP7fbIkW6T-/view?usp=drive_link">ch02_2-2會議錄音 的副本</CaseLink>
+      </div>
     </Body>
   </Slide>
 );
@@ -1517,6 +1535,9 @@ const U5Old: Page = () => (
         ]}
       />
       <Note>不說清楚，AI 很可能把舊資料原封不動抄進新記錄</Note>
+      <div style={{ marginTop: 18 }}>
+        <CaseLink href="https://docs.google.com/document/d/1LdBd9Vrs8BuCs_FkV7WFrDalO_TPaZ33XT5LPi53dxQ/edit?usp=sharing">20250908 會議記錄</CaseLink>
+      </div>
     </Body>
   </Slide>
 );
