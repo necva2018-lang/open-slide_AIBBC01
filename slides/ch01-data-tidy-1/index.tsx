@@ -908,6 +908,30 @@ const Big = ({ children, style }: { children: ReactNode; style?: CSSProperties }
   <div style={{ fontSize: 44, lineHeight: 1.5, ...style }}>{children}</div>
 );
 
+const CaseLink = ({ href, children }: { href: string; children: ReactNode }) => (
+  <a
+    data-osd-interactive
+    href={href}
+    target="_blank"
+    rel="noopener noreferrer"
+    onClick={(event) => event.stopPropagation()}
+    style={{
+      display: 'inline-block',
+      padding: '8px 18px',
+      border: '2px solid var(--osd-accent)',
+      borderRadius: 12,
+      background: C.panel,
+      color: 'var(--osd-accent)',
+      fontSize: 28,
+      fontWeight: 700,
+      textDecoration: 'none',
+      whiteSpace: 'nowrap',
+    }}
+  >
+    🔗 {children}
+  </a>
+);
+
 const SumX = ({ label, line, sub }: { label: string; line: ReactNode; sub?: ReactNode }) => (
   <Slide dark center>
     <div style={{ fontSize: 32, color: C.gold, letterSpacing: '0.12em', fontWeight: 700 }}>{label}</div>
@@ -1006,7 +1030,7 @@ const Agenda: Page = () => (
     <Body>
       <Grid
         cols="140px 1fr"
-        size={38}
+        size={32}
         rows={[
           ['單元', '主題'],
           ['1-1', '一份 Excel，兩張表'],
@@ -1018,6 +1042,9 @@ const Agenda: Page = () => (
         ]}
       />
       <Note>請先登入 Google 帳號，打開 Gemini 和雲端硬碟的案例資料夾</Note>
+      <div style={{ marginTop: 18 }}>
+        <CaseLink href="https://drive.google.com/drive/folders/1tLLfRwkIcIlfoHCXrdtHlWEWXi75nlzo?usp=sharing">CH01</CaseLink>
+      </div>
     </Body>
   </Slide>
 );
@@ -1078,6 +1105,9 @@ const U1Case: Page = () => (
       />
       <Note>共 100 筆、10 欄，2023 全年。訂單和用戶資料混在同一張表</Note>
       <Note>用「上傳檔案」，不要貼成文字：4/8/2023 貼成文字可能被讀成 8 月 4 日</Note>
+      <div style={{ marginTop: 18 }}>
+        <CaseLink href="https://docs.google.com/spreadsheets/d/1fi92uJ9wxHQlszbgLDNCv4a-WSIC71ko/edit?usp=drive_link&amp;ouid=106933289380374061450&amp;rtpof=true&amp;sd=true">CH01_1-1 訂單與用戶資料.xlsx</CaseLink>
+      </div>
     </Body>
   </Slide>
 );
@@ -1216,6 +1246,10 @@ const U2Case: Page = () => (
         />
       </div>
       <Note>PDF 版面固定、不能直接加總；以前要從 A 文件抄進 B 表格，再寫進 C 報告</Note>
+      <div style={{ display: 'flex', gap: 16, marginTop: 18 }}>
+        <CaseLink href="https://drive.google.com/file/d/1FF6rsEmC67tH_nS9yvprLEK_WUMHqCpZ/view">ch01_1-2-1 托吊統計</CaseLink>
+        <CaseLink href="https://drive.google.com/file/d/14CyUhDVpT6C_9RrRxRM4-QIaXtHNwUZD/view">ch01_1-2-2交通事故統計</CaseLink>
+      </div>
     </Body>
   </Slide>
 );
@@ -1351,8 +1385,11 @@ const U3Case: Page = () => (
           ['1/5/2025', '固定開銷', '電話費', '手機月租費', '999'],
         ]}
       />
-      <Prompt label="提示詞（原文）" size={32} style={{ marginTop: 44 }} lines={['幫我直接增加 Excel 的工作表來做這些分類的部分']} />
+      <Prompt label="提示詞（原文）" size={32} style={{ marginTop: 26 }} lines={['幫我直接增加 Excel 的工作表來做這些分類的部分']} />
       <Note>業績、庫存、客戶資料也一樣：分類、細目統計交給 AI 很快，前提是資料先檢查過</Note>
+      <div style={{ marginTop: 8 }}>
+        <CaseLink href="https://docs.google.com/spreadsheets/d/1XZT2gpFnMKZR7ZFuweXCPA2jiJpg27dd/edit?usp=drive_link&amp;ouid=106933289380374061450&amp;rtpof=true&amp;sd=true">CH01_1-3 交易紀錄</CaseLink>
+      </div>
     </Body>
   </Slide>
 );
@@ -1478,6 +1515,10 @@ const U4Case: Page = () => (
         <Col tag="圖片" title="會議簡報" body={'含工作分配表\n（待補）'} />
       </div>
       <Note>Word 檔、試算表也一樣可以一起上傳</Note>
+      <div style={{ display: 'flex', gap: 16, marginTop: 18 }}>
+        <CaseLink href="https://drive.google.com/file/d/1VRKtKLwWh4SBYT-VdOPhYPnvNFsOWaYQ/view?usp=drive_link">ch01_1-4-1 PDF 文件</CaseLink>
+        <CaseLink href="https://drive.google.com/file/d/10JR_Af5StLxBBPZaj9JjNzpayjbSlyyO/view?usp=drive_link">ch01_1-4-2 會議錄音</CaseLink>
+      </div>
     </Body>
   </Slide>
 );
