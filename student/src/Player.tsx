@@ -14,7 +14,6 @@ function useFitScale() {
 }
 
 function goHome() {
-  if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
   window.location.hash = '';
 }
 
@@ -65,22 +64,11 @@ export function Player({ no, mod, page }: { no: string; mod: DeckModule; page: n
         prev();
       } else if (e.key === 'Home') goTo(1, 'backward');
       else if (e.key === 'End') goTo(total, 'forward');
-      else if (e.key === 'Escape' && !document.fullscreenElement) goHome();
+      else if (e.key === 'Escape') goHome();
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, [next, prev, goTo, total]);
-
-  // 按 Esc 離開全螢幕時，一併回到首頁
-  useEffect(() => {
-    let wasFull = !!document.fullscreenElement;
-    const on = () => {
-      if (wasFull && !document.fullscreenElement) window.location.hash = '';
-      wasFull = !!document.fullscreenElement;
-    };
-    document.addEventListener('fullscreenchange', on);
-    return () => document.removeEventListener('fullscreenchange', on);
-  }, []);
 
   // 手機左右滑動翻頁
   const touch = useRef<{ x: number; y: number } | null>(null);

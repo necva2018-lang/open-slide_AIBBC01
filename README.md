@@ -2,7 +2,7 @@
 
 | 入口 | 網址 | 給誰 |
 |---|---|---|
-| 學員站 | <https://necva2018-lang.github.io/open-slide_AIBBC01/student/> | 學員：只有開放中的章節，點了直接全螢幕播放，可下載 PDF；沒有講者備註 |
+| 學員站 | <https://necva2018-lang.github.io/open-slide_AIBBC01/student/> | 學員：只有開放中的章節，點了在瀏覽器視窗中播放，可下載 PDF；沒有講者備註 |
 | 講師站 | <https://necva2018-lang.github.io/open-slide_AIBBC01/> | 講師：全部章節＋講者備註，需輸入密碼 |
 
 ## 資料夾

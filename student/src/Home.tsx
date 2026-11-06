@@ -7,11 +7,7 @@ function stripNo(title: string) {
 }
 
 export function openDeck(no: string) {
-  // 點卡片是使用者手勢，可以直接要求全螢幕（iPhone 不支援時就以整個視窗播放）
-  const el = document.documentElement;
-  if (el.requestFullscreen && !document.fullscreenElement) {
-    el.requestFullscreen().catch(() => {});
-  }
+  // 保留瀏覽器視窗與工具列，不自動切換成全螢幕。
   window.location.hash = `#/${no}/1`;
 }
 
@@ -53,7 +49,7 @@ export function Home({
       <header className="home-head">
         <p className="eyebrow">AI 職場全效生產力應用班</p>
         <h1>課程簡報</h1>
-        <p className="hint">點選簡報即可全螢幕播放 · 鍵盤 ← → 或手機左右滑動翻頁 · 翻牌卡可以直接點</p>
+        <p className="hint">點選簡報即可在視窗中播放 · 鍵盤 ← → 或手機左右滑動翻頁 · 翻牌卡可以直接點</p>
       </header>
       <ul className="grid">
         {decks.map((d) => {
