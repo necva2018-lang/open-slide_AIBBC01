@@ -13,6 +13,12 @@ const pdfDir = path.join(repo, 'pdf');
 
 type Deck = { no: string; dir: string; pdf: string | null };
 
+// CH04 與 CH04-2 的資料夾名稱不含完整章節代碼，須明確對應，避免誤選。
+const deckDirOverrides: Record<string, string> = {
+  '04': 'ch04-sheets-ai-2',
+  '04-2': 'ch04-gas-automation',
+};
+
 function readDecks(): Deck[] {
   const { public: list } = JSON.parse(fs.readFileSync(path.join(here, 'public.json'), 'utf8')) as {
     public: string[];
@@ -20,9 +26,9 @@ function readDecks(): Deck[] {
   const dirs = fs.readdirSync(slidesDir);
   const pdfs = fs.existsSync(pdfDir) ? fs.readdirSync(pdfDir) : [];
   return [...new Set(list.map((x) => String(x)))].sort().map((no) => {
-    // 章節代碼 00-1、01 對應資料夾 ch00-1-*、ch01-*（ch01 不會誤配到 ch01-1-*）
-    const dir = dirs.find((d) => d.startsWith(`ch${no}-`) && !/^\d/.test(d.slice(`ch${no}-`.length)));
-    if (!dir) throw new Error(`public.json 列了 ${no}，但 slides/ 找不到 ch${no}-* 資料夾`);
+    // 一般章節用 ch<代碼>-*；特殊命名章節依上方明確對應。
+    const dir = deckDirOverrides[no] ?? dirs.find((d) => d.startsWith(`ch${no}-`) && !/^\d/.test(d.slice(`ch${no}-`.length)));
+    if (!dir || !dirs.includes(dir)) throw new Error(`public.json 列了 ${no}，但 slides/ 找不到對應資料夾`);
     return { no, dir, pdf: pdfs.find((f) => f.startsWith(`${no}_`) && f.endsWith('.pdf')) ?? null };
   });
 }
