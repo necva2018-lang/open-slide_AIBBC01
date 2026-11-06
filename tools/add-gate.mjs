@@ -25,7 +25,8 @@ const decks = fs
     const src = fs.readFileSync(new URL(`${dir}/index.tsx`, slidesDir), 'utf8');
     const meta = src.slice(src.indexOf('export const meta'));
     const title = (meta.match(/title:\s*'([^']*)'/) || [])[1] || dir;
-    const no = dir.match(/^ch(\d{2}(?:-\d+)?)-/)[1];
+    // CH04-2 的資料夾名是 ch04-gas-automation，編號須以簡報標題為準。
+    const no = (title.match(/^CH(\d{2}(?:-\d+)?)｜/) || dir.match(/^ch(\d{2}(?:-\d+)?)-/))[1];
     return { no: 'CH' + no, title: title.replace(/^CH\d{2}(?:-\d+)?｜/, ''), on: open.includes(no) };
   });
 
